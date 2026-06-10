@@ -2,7 +2,7 @@
 
 /* Navbar */
 .navbar {
-  background: #000099;
+  background: #006600;
   color: white;
   padding: 0.8rem 2rem;
 }
@@ -35,7 +35,7 @@
 }
 
 .nav-links a:hover {
-  color: #ea0a90;
+  color: #FFFFFF;
   font-weight: bold;
   font-size: 20px;
 }
@@ -73,10 +73,8 @@
 }
 
 
-
-
 .footer {
-  background-color: #1e293b;
+  background-color: #006600;
   color: white;
   padding: 15px;
   text-align: center;
@@ -85,4 +83,23 @@
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+
+
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
 }
