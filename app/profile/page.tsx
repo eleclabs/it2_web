@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
 
-export default async function Dashboard() {
+export default async function Profile() {
   const user = await getSession();
 
   if (!user) {
@@ -10,8 +10,9 @@ export default async function Dashboard() {
 
   return (
     <div className="page">
-      <h1>Dashboard</h1>
-      <p>Welcome: {user.name as string}</p>
+      <h1>Profile</h1>
+      <p>Name: {user.name as string}</p>
+      
       <p>Role: {user.role as string}</p>
     </div>
   );
