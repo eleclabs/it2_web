@@ -85,7 +85,7 @@ export async function POST(request: Request) {
       stock === undefined ||
       !category ||
       !imageUrl ||
-      !imagePublicId
+      !imagePublicId 
     ) {
       return NextResponse.json(
         { message: "กรุณากรอกข้อมูลสินค้าให้ครบ" },
@@ -123,7 +123,7 @@ export async function POST(request: Request) {
       stock: Number(stock),
       category,
       imageUrl,
-      imagePublicId,
+      imagePublicId, 
       published: published ?? true,
     });
 

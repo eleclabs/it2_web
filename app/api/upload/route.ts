@@ -12,6 +12,19 @@ const allowedTypes = [
   "image/webp",
 ];
 
+function getUploadErrorStatus(error: unknown) {
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "http_code" in error &&
+    typeof error.http_code === "number"
+  ) {
+    return error.http_code === 401 || error.http_code === 403 ? 502 : 500;
+  }
+
+  return 500;
+}
+
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
@@ -89,9 +102,16 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Upload error:", error);
 
+    const status = getUploadErrorStatus(error);
+
     return NextResponse.json(
-      { message: "เกิดข้อผิดพลาดในการอัปโหลดรูป" },
-      { status: 500 }
+      {
+        message:
+          status === 502
+            ? "Cloudinary ปฏิเสธการอัปโหลด โปรดตรวจสอบการตั้งค่า Cloudinary"
+            : "เกิดข้อผิดพลาดในการอัปโหลดรูป",
+      },
+      { status }
     );
   }
 }

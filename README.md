@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Saki Web
 
-## Getting Started
+เว็บจัดการสินค้า พัฒนาด้วย Next.js, MongoDB และ Cloudinary
 
-First, run the development server:
+## ความต้องการ
+
+- Node.js 20 ขึ้นไป
+- MongoDB connection string
+- บัญชี Cloudinary
+
+## ติดตั้งและเริ่มระบบ
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+เปิด `http://localhost:3000` แล้วไปที่ `/admin/products` เพื่อเพิ่มสินค้า
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+สร้างไฟล์ `.env` ที่ root ของโปรเจกต์ โดยแต่ละตัวแปรต้องอยู่คนละบรรทัด:
 
-## Learn More
+```env
+MONGODB_URI=mongodb+srv://...
+JWT_SECRET=replace-with-a-long-random-secret
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+```
 
-To learn more about Next.js, take a look at the following resources:
+หา `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY` และ `CLOUDINARY_API_SECRET` ได้จาก Cloudinary Console > Settings > API Keys
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+หลังแก้ `.env` ต้องหยุดและเริ่ม `npm run dev` ใหม่ เพื่อให้ Next.js โหลดค่าใหม่
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## การอัปโหลดรูปสินค้า
 
-## Deploy on Vercel
+- รองรับ JPEG, PNG และ WebP
+- ขนาดไฟล์สูงสุด 10 MB
+- รูปถูกจัดเก็บที่ Cloudinary ในโฟลเดอร์ `ecommerce/products`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### แก้ปัญหา `403` จาก Cloudinary
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+ตรวจสอบว่าไฟล์ `.env` ไม่ได้เป็นบรรทัดเดียวที่มีข้อความ `\n` คั่นอยู่ ต้องเป็นบรรทัดจริงตามตัวอย่างด้านบน หากยังพบปัญหา ให้คัดลอก API credentials ชุดใหม่จาก Cloudinary Console แล้ว restart development server
