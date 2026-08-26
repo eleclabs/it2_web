@@ -47,7 +47,7 @@ export async function POST(request: Request) {
       $or: [{ title }, { slug }],
     });
 
-    if (existingBlog                        ) {
+    if (existingBlog) {
       return NextResponse.json(
         { message: "ชื่อหรือ slug นี้มีอยู่แล้ว" },
         { status: 409 }

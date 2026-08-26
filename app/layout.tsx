@@ -26,13 +26,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body  className="layout">
+      <body className="layout">
         <Navbar />
         <main className="main-content">
           {children}
         </main>
         <Footer />
-        </body>
+      </body>
     </html>
   );
 }
