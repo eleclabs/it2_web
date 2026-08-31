@@ -19,10 +19,16 @@ function getUploadErrorStatus(error: unknown) {
     "http_code" in error &&
     typeof error.http_code === "number"
   ) {
-    return error.http_code === 401 || error.http_code === 403 ? 502 : 500;
+    const { http_code: httpCode } = error;
+
+    // Keep client errors from Cloudinary intact. Turning a permission error into
+    // 502 obscures the actual cause and makes it look like our API is down.
+    if (httpCode >= 400 && httpCode < 500) {
+      return httpCode;
+    }
   }
 
-  return 500;
+  return 502;
 }
 
 export async function POST(request: Request) {
@@ -107,9 +113,11 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         message:
-          status === 502
-            ? "Cloudinary ปฏิเสธการอัปโหลด โปรดตรวจสอบการตั้งค่า Cloudinary"
-            : "เกิดข้อผิดพลาดในการอัปโหลดรูป",
+          status === 401
+            ? "ไม่สามารถยืนยันตัวตนกับ Cloudinary ได้ โปรดตรวจสอบ API key และ API secret"
+            : status === 403
+              ? "Cloudinary ไม่อนุญาตให้ API key นี้อัปโหลดรูป โปรดตรวจสอบสิทธิ์ Upload ของ API key หรือการตั้งค่า Security ใน Cloudinary"
+              : "เกิดข้อผิดพลาดในการอัปโหลดรูป",
       },
       { status }
     );

@@ -30,9 +30,9 @@ export default function AdminBlogList({
   function startEditing(blog: BlogCardData) {
     setEditingId(blog._id);
     setFormData({
-      title: blog.title,
-      slug: blog.slug,
-      content: blog.content,
+      title: blog.title ?? "",
+      slug: blog.slug ?? "",
+      content: blog.content ?? "",
     });
   }
 

@@ -183,10 +183,10 @@ export type BlogCardData = {
 };
 
 type BlogCardProps = {
-    blog: BlogCardData;
+    blog?: BlogCardData | null;
 };
 
-function formatDate(date: string) {
+function formatDate(date?: string) {
     if (!date) {
         return "";
     }
@@ -205,13 +205,29 @@ function formatDate(date: string) {
 }
 
 export default function BlogCard({ blog }: BlogCardProps) {
-    const formattedDate = formatDate(blog.createdAt);
+    const safeBlog: BlogCardData = blog ?? {
+        _id: "",
+        title: "",
+        slug: "",
+        content: "",
+        createdAt: "",
+    };
+
+    const formattedDate = formatDate(safeBlog.createdAt);
+
+    if (!safeBlog._id && !safeBlog.title && !safeBlog.content && !safeBlog.slug) {
+        return (
+            <div className="rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-6 text-center text-gray-500">
+                ยังไม่มีบทความ
+            </div>
+        );
+    }
 
     return (
         <article className="flex min-h-64 flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
             {formattedDate && (
                 <time
-                    dateTime={blog.createdAt}
+                    dateTime={safeBlog.createdAt}
                     className="text-sm text-gray-500"
                 >
                     {formattedDate}
@@ -219,20 +235,20 @@ export default function BlogCard({ blog }: BlogCardProps) {
             )}
 
             <Link
-                href={`/blogs/${blog._id}`}
+                href={safeBlog._id ? `/blogs/${safeBlog._id}` : "#"}
                 className="group"
             >
                 <h2 className="mt-3 text-xl font-bold text-gray-900">
-                    {blog.title || "ไม่มีชื่อบทความ"}
+                    {safeBlog.title || "ไม่มีชื่อบทความ"}
                 </h2>
             </Link>
-            {blog.slug && (
+            {safeBlog.slug && (
                 <p className="mt-1 text-sm text-green-700">
-                    #{blog.slug}
+                    #{safeBlog.slug}
                 </p>
             )}
 
-            {blog.content ? (
+            {safeBlog.content ? (
                 <div
                     className="prose prose-sm mt-4 max-w-none leading-7 text-gray-600
             prose-headings:text-gray-900
@@ -240,7 +256,7 @@ export default function BlogCard({ blog }: BlogCardProps) {
             prose-strong:text-gray-900
             prose-img:rounded-xl"
                     dangerouslySetInnerHTML={{
-                        __html: blog.content,
+                        __html: safeBlog.content,
                     }}
                 />
             ) : (
