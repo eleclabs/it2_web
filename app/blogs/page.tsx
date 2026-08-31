@@ -1,14 +1,3 @@
-/* import BlogCard from "@/components/BlogCard";
-
-export default async function BlogsPage() {
-  return (
-    <>
-      <BlogCard />
-    </>
-  );
-}
- */
-
 import type { Metadata } from "next";
 import { connectDB } from "@/lib/mongodb";
 import Blog from "@/models/Blog";
