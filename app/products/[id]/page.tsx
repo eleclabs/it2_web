@@ -155,6 +155,12 @@ export default async function ProductDetailPage({
                     </p>
                 )}
 
+                {product.price && (
+                    <p className="mt-4 text-lg font-semibold text-gray-900">
+                        ราคา: {product.price} บาท
+                    </p>
+                )}
+
                 {category && (
                     <p className="mt-3 text-sm text-green-700">
                         #{category}
