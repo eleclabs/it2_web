@@ -1,6 +1,15 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+
+function createSlug(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9ก-๙-]/g, "");
+}
+
 import dynamic from "next/dynamic";
 
 const BlogEditor = dynamic(
@@ -17,6 +26,7 @@ const BlogEditor = dynamic(
 
 export default function NewBlogPage() {
   const [title, setTitle] = useState<string>("");
+  const [slug, setSlug] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -45,6 +55,7 @@ export default function NewBlogPage() {
         },
         body: JSON.stringify({
           title,
+          slug,
           content,
         }),
       });
@@ -60,6 +71,7 @@ export default function NewBlogPage() {
       alert("สร้างบทความสำเร็จ");
 
       setTitle("");
+      setSlug("");
       setContent("");
     } catch (error) {
       console.error(error);
@@ -93,9 +105,10 @@ export default function NewBlogPage() {
           <input
             type="text"
             value={title}
-            onChange={(event) =>
-              setTitle(event.target.value)
-            }
+            onChange={(event) => {
+              setTitle(event.target.value);
+              setSlug(createSlug(event.target.value));
+            }}
             placeholder="ชื่อบทความ"
             className="w-full border rounded-lg px-4 py-3"
           />
